@@ -1,27 +1,28 @@
 sudo: false
 language: scala
 stages:
-  - test
-  - name: deploy
-    if: branch = master AND NOT type IN (pull_request)
-
+- test
+- name: deploy
+  if: branch = master AND NOT type IN (pull_request)
 script: sbt +test
-
 jobs:
   include:
-    - stage: test
-      jdk: openjdk8
-    - stage: test
-      jdk: oraclejdk11
-    - stage: test
-      jdk: openjdk11
-      script: sbt clean coverage +test && sbt coverageReport coveralls
-    - stage: deploy
-      jdk: openjdk11
-      script: |
-        openssl aes-256-cbc -K $encrypted_15ce06f7b2e5_key -iv $encrypted_15ce06f7b2e5_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar -d &&
-          tar xv -C travis -f travis/local.secrets.tar &&
-          echo $PGP_PASS | gpg --passphrase-fd 0 --batch --yes --import travis/local.secring.asc &&
-          sbt +releaseEarly sonatypeBundleRelease
+  - stage: test
+    jdk: openjdk8
+  - stage: test
+    jdk: oraclejdk11
+  - stage: test
+    jdk: openjdk11
+    script: sbt clean coverage +test && sbt coverageReport coveralls
+  - stage: deploy
+    jdk: openjdk11
+    script: |
+      openssl aes-256-cbc -K $encrypted_d23a0409349c_key -iv $encrypted_d23a0409349c_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar -d &&
+        tar xv -C travis -f travis/local.secrets.tar &&
+        echo $PGP_PASS | gpg --passphrase-fd 0 --batch --yes --import travis/local.secring.asc &&
+        sbt +releaseEarly sonatypeBundleRelease
 env:
   global:
+  - secure: R34ooDzeMXZzkG8fNHpy8vRiZdVB1rkH33be28+TCkyz1WaP788HEqyArr16a7lkbEhuu2+4QGo8h0B/fVZM1PaLWs30W0TWeNjAINPLyumqeYoE9Luuj42GXZsi3z+ncKbbGosbsmRrWAYBOTfvZ3QBv2bLWHZ9ReFdtYuilmjJLB9VLyHhQG/Xm5UhOAGgqF/2P4XAxd0A4lXr5BBKk5O/cpj9fQPK9QYTBbrRle+U9Yd5nF8xvCFPcI7sw8tHoyGcrN40aocXZZjl9Asq5Gf1Px3Y+0BGvryDXSKO9xquJHhHxgL0S0rZ11FN1ZFIaqQK0hxNDpqM4hjNOHcO0BUQOpDX0VxM2RSmwEG2q5VRfNq3DvrbOFPdLGMInJMilMHOS6+ay40DuxQtDIePH6gZ1EU/5GshbIliTQ0SbPY92hO2yjHuGPQ7qvFZ2Dv+t+f1ztLMCUn5VnQ9Mi1ZOmhswHmXErEeV7Nc4HgSVxrH8hXjh7KAxzxjIzvNjswH5jE3MMnjvG9aCiw+kC5P5k0rQaigfDVcLymrrIjOJfoVgdlsF5GbMAd0vqULW1z29GZBamSJOKK/fatLDMgYDJkUTByyb9E/s61Ab8ID6rlPosBY/Z7Q4vB59f38xjjOeoHdDKY99fVJ+zmrPGOvqRuY5upasvSNUNo2uVs2/PY=
+  - secure: Kusr6DWUJLXCss/6DKJ05WnD4y67QV9xg5V22zJk1QXoztxC2cmCwDjecERRb4TeVPrQUnUUwJWXSylEqcNMMrFU4MLa7OUUjjS3s+W4PA/HZtC1iZAKq/8M7j6BSRtINiCHpcii541XjLDFk/Ll+rhsQU/Rdswo0bx4BPJadJLiRKZnUTMV+mUiHDT+rwvlz8RVVsoX1H1aiI+R33XXWudFKmDYDGz892eEKjRaKq5MssGyOpYC92SKXT03gTwqKdSOqcyYv8uCRup3TlGL75WrgU4fPGxN6CnHlkZFwwUkhIbGLt33LZmKv19WbfxR1IP9CEOKNjaGq7SY9X6NDBm07bsUChS90ZJcyc303JvOmag9jOZQDAmqjBN7S099+gmewhMorm0JrHQ5ICISNhGnT0EmNfOHVBEa3NVs11yMPmcQzRhYZs99tbsQJRTB4Ht2rsgYkh09o1KgKeuLVVHDLtmwCks2HnJxKf9DjTRLG9XCWzKSo009qLXFxChyiad5aBUSGBKAEIBUl2UOnTfuHqd1p5iOeK3WbD6YSoWmGX7OHimE/F/c07k0p5fFbDmnD0j1/UrglRgVuHZN4QWaAdwad1gl3bWFpSNvJzjS3K3w12UTEMNOv18Yxc22rhMRvgaprvW1KJhw0aTT+jaYfpCvs6baDD9PahI6pcM=
+  - secure: OrGdvuOLtDp1oj15UITyjyYEEeu+Z4da+8aizN+TyESrr4kOScSfeSkquW15LUGEORpIJxjjKPj8VyizMOBUCQ/0eboUeXzuje6f/He7pIgrXuU8dcc0rmYOYxu4ylf7N/6s0WtUIuguc9DSwqk/1TumUkst6Gt3EjRsDqUwWL0jybBFPsqifWfLqYhvIxSutWxvi6n2zSFGqZf8umr8UghpZZdDHIuuADb9+iU1MVUrE63B8Dbdew3T6dET9pqzlLly/YFusigNY5epGj/nXtrH+kGOwRRama4leP+afGkuT18pLUZbxyNDAxwkUWnLprFnyJXIrBaV228eAPjTNZtHCUnmztsGSoDCOJaM+lgXijrem66cQg8tqWuH+y/Dh64HXj16+BRtlQj/5EDJQp8r3EICriRSlQukmCgoPCW+ZAbaredRr2BI8lbHjyQPgvVvVyyJsAVoHuJMTZjF2BfYFy6kmHQLbOCMrxgI0Cms4ZOKB3Jfy2sQ+520VTAqd/KGRwPYpEw3bqupiKfCjbqNhnMeUJ35JqT172Pq8E3wUQt99c14oMgj4U/OEf3FXYZ4cYb3yIZG0KYf+qx3ONSzVSfq8luLXMBdWSUO7x40EuAyaf9ox0euZ1VZ0zvtOELKkKvR/L1IrPBfO0QhCPgG0YvJ0hlZ4eQZ1OZCabU=
