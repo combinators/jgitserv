@@ -21,7 +21,7 @@ lazy val commonSettings = Seq(
     "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.1" % "test",
     "org.scalacheck" %% "scalacheck" % "1.14.1" % "test" 
   ),
-  headerLicense := Some(HeaderLicense.ALv2("2018-2020", "Jan Bessai")),
+  headerLicense := Some(HeaderLicense.ALv2("2020", "Jan Bessai")),
   scapegoatVersion in ThisBuild := "1.4.1"
 ) ++ publishSettings
 
