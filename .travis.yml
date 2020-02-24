@@ -2,23 +2,8 @@ sudo: false
 language: scala
 stages:
 - test
-- name: deploy
-  if: branch = master AND NOT type IN (pull_request)
-script: sbt +test
+script: 
 jobs:
-  include:
   - stage: test
-    jdk: openjdk8
-  - stage: test
-    jdk: oraclejdk11
-  - stage: test
-    jdk: openjdk11
-    script: sbt clean coverage +test && sbt coverageReport coveralls
-  - stage: deploy
-    jdk: openjdk11
-    script: |
-      openssl enc -d -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -pass env:OPENSSL_ENC -salt -in travis/secrets.tar.enc -out travis/local.secrets.tar &&
-        tar xv -C travis -f travis/local.secrets.tar &&
-        echo $PGP_PASS | gpg --passphrase-fd 0 --batch --yes --import travis/local.secring.asc &&
-        sbt +releaseEarly sonatypeBundleRelease
+    script: openssl version
 
