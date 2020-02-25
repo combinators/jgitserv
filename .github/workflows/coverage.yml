@@ -17,7 +17,7 @@ jobs:
         java-version: adopt@1.13
     - name: Analyze coverage
       run: sbt clean coverage +test
-    - name: Upate coverage report 
+    - name: Update coverage report 
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: sbt coverageReport coveralls
