@@ -10,7 +10,6 @@ jobs:
         java: [ 8, 11, 13 ]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Set up JDK and SBT
     - uses: actions/checkout@v1  
     - uses: olafurpg/setup-scala@v5
       with:
