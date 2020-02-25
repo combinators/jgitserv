@@ -1,4 +1,4 @@
-name: Scala CI
+name: Run Tests on Push
 
 on: [push] 
 
