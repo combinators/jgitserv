@@ -47,7 +47,7 @@ jobs:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
-        PGP_PASS: secrets.PGP_PASS
+        PGP_PASS: ${{ secrets.PGP_PASS }}
       run: |
         echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --import &&
         sbt +releaseEarly sonatypeBundleRelease
