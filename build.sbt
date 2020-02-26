@@ -58,8 +58,6 @@ lazy val publishSettings = Seq(
       url("http://janbessai.github.io")
     )
   ),
-  pgpPublicRing := file("travis/local.pubring.asc"),
-  pgpSecretRing := file("travis/local.secring.asc"),
   releaseEarlyWith := SonatypePublisher
 )
 
