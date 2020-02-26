@@ -43,9 +43,9 @@ jobs:
       with:
         java-version: adopt@1.13
     - name: Build and release
-        env:
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      env:
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       run: |
         echo ${{ secrets.GPG_PRIVATE }} | base64 -d | gpg --passphrase=${{ secrets.GPG_PASS }} --yes --import &&
         sbt +releaseEarly sonatypeBundleRelease
