@@ -1,5 +1,8 @@
 import sbt.{Credentials, Developer, ScmInfo}
 
+import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
+import ch.epfl.scala.sbt.release.ReleaseEarlyPlugin.autoImport._
+
 lazy val commonSettings = Seq(
   organization := "org.combinators",
   scalaVersion := "2.12.10",
