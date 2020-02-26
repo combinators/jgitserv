@@ -1,4 +1,4 @@
-name: Update Coverage on Pull Request
+name: Test code, update coverage, and release master branch
 
 on: [ push, pull_request ]
 
