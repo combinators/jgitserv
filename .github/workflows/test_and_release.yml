@@ -12,7 +12,9 @@ jobs:
         java: [ 8, 11, 13 ]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2 
+    - uses: actions/checkout@v2
+    - if: runner.os == 'Windows'
+      shell: bash
     - name: Set up JDK, Scala, and SBT
       uses: olafurpg/setup-scala@v5
       with:
