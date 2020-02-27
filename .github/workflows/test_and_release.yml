@@ -44,7 +44,7 @@ jobs:
     - name: Set up JDK, Scala, and SBT
       uses: olafurpg/setup-scala@v5
       with:
-        java-version: adopt@1.13
+        java-version: adopt@1.11
     - name: Build and release
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
