@@ -33,7 +33,7 @@ jobs:
     - name: Update coverage report 
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-      run: sbt EXTRA_SBT_OPTS coverageReport coveralls
+      run: sbt $EXTRA_SBT_OPTS coverageReport coveralls
   release:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
@@ -52,7 +52,7 @@ jobs:
         PGP_PASS: ${{ secrets.PGP_PASS }}
       run: |
         echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --import &&
-        sbt EXTRA_SBT_OPTS +releaseEarly sonatypeBundleRelease
+        sbt $EXTRA_SBT_OPTS +releaseEarly sonatypeBundleRelease
 
 
     
