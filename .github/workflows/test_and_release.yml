@@ -51,6 +51,7 @@ jobs:
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
         PGP_PASS: ${{ secrets.PGP_PASS }}
+        CI: true
       run: |
         export GPG_TTY=$(tty) &&
         echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --batch --import &&
