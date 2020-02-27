@@ -28,10 +28,6 @@ lazy val commonSettings = Seq(
   scapegoatVersion in ThisBuild := "1.4.1",
   concurrentRestrictions in Global ++= {
     if (sys.env.get("CI") == Some("github")) Seq(Tags.limitAll(1)) else Seq.empty
-  },
-  gpgCommand in Global := {
-    if (sys.env.get("CI") == Some("github")) (baseDirectory.value / ".github" / "gpg.sh").getAbsolutePath
-    else "gpg"
   }
 ) ++ publishSettings
 

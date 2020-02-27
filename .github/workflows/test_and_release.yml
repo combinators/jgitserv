@@ -54,7 +54,8 @@ jobs:
         CI: github
       run: |
         export GPG_TTY=$(tty) &&
-        echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --batch --import &&
+        echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --batch --pinentry-mode loopback --import &&
+        export PATH=`pwd`/.github/bin:$PATH &&
         sbt $EXTRA_SBT_OPTS +releaseEarly sonatypeBundleRelease
 
 
