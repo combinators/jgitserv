@@ -25,7 +25,10 @@ lazy val commonSettings = Seq(
     "org.scalacheck" %% "scalacheck" % "1.14.1" % "test" 
   ),
   headerLicense := Some(HeaderLicense.ALv2("2020", "Jan Bessai")),
-  scapegoatVersion in ThisBuild := "1.4.1"
+  scapegoatVersion in ThisBuild := "1.4.1",
+  concurrentRestrictions in Global ++= {
+    if (sys.env.get("CI") == Some("github")) Seq(Tags.limitAll(1)) else Seq.empty
+  }
 ) ++ publishSettings
 
 lazy val root =

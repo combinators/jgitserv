@@ -2,7 +2,7 @@ name: Test code, update coverage, and release master branch
 
 on: [ push, pull_request ]
 env:
-  EXTRA_SBT_OPTS: -Dsbt.boot.lock=false -Dsbt.ci=true 
+  EXTRA_SBT_OPTS: -Dsbt.boot.lock=false
 
 jobs:
   test:
@@ -51,6 +51,7 @@ jobs:
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
         PGP_PASS: ${{ secrets.PGP_PASS }}
+        CI: github
       run: |
         export GPG_TTY=$(tty) &&
         echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --batch --import &&
