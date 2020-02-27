@@ -52,6 +52,7 @@ jobs:
         GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
         PGP_PASS: ${{ secrets.PGP_PASS }}
       run: |
+        export $GPG_TTY=$(tty) &&
         echo $GPG_PRIVATE | base64 -d | gpg --passphrase=$PGP_PASS --yes --import &&
         sbt $EXTRA_SBT_OPTS +releaseEarly sonatypeBundleRelease
 
