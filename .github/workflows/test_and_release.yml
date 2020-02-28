@@ -41,6 +41,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check if we are head of master 
+      id: check_head_of_master
       run: |
         git fetch origin master &&
         MASTER=`git rev-parse origin/master` &&
@@ -48,12 +49,12 @@ jobs:
         CURRENT=`git rev-list -n 1 ${{ github.ref }}` &&
         echo "::set-output name=current_job_ref::$CURRENT"
     - name: Set up JDK, Scala, and SBT
-      if: steps.vars.outputs.head_of_master == steps.vars.outputs.current_job_ref
+      if: steps.check_head_of_master.outputs.head_of_master == steps.check_head_of_master.outputs.current_job_ref
       uses: olafurpg/setup-scala@v5
       with:
         java-version: adopt@1.11
     - name: Build and release
-      if: steps.vars.outputs.head_of_master == steps.vars.outputs.current_job_ref
+      if: steps.check_head_of_master.outputs.head_of_master == steps.check_head_of_master.outputs.current_job_ref
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
