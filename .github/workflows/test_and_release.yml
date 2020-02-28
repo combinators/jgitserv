@@ -37,15 +37,20 @@ jobs:
       run: sbt $EXTRA_SBT_OPTS coverageReport coveralls
   release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     needs: [ test, coverage ]
     steps:
     - uses: actions/checkout@v2
+    - name: Check if we are head of master 
+      run: |
+        echo "::set-output name=head_of_master::`git rev-list -n 1 refs/heads/master`" &&
+        echo "::set-output name=current_job_ref::`git rev-list -n 1 ${{ github.ref }}`"
     - name: Set up JDK, Scala, and SBT
+      if: steps.vars.outputs.head_of_master == steps.vars.outputs.current_job_ref
       uses: olafurpg/setup-scala@v5
       with:
         java-version: adopt@1.11
     - name: Build and release
+      if: steps.vars.outputs.head_of_master == steps.vars.outputs.current_job_ref
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
