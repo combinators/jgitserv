@@ -119,14 +119,26 @@ class GitService(
 
   def run(args: List[String]): IO[ExitCode] = {
     git.use(git => {
+      val timedPattern = raw".*(?:(?:timed)(?:=)?(\d*)?).*".r
       val server = Resource.make(new Endpoints(git).serve) { s =>
         IO.suspend(implicitly[ToAsync[Future, IO]].apply(s.close()))
       }
       server
         .use(_ =>
-          IO {
-            println("Press enter to stop the server")
-            scala.io.StdIn.readLine()
+          args.filter(x => x.startsWith("timed")).mkString(" ") match {
+            case timedPattern(time) =>
+              IO {
+                val millisec =
+                  if (time.equals("")) 120000 else time.toInt * 1000
+                println(s"wait for ${millisec / 1000} seconds")
+                Thread.sleep(millisec)
+                println("Going to shutdown the server")
+              }
+            case _ =>
+              IO {
+                println("Press enter to stop the server")
+                scala.io.StdIn.readLine()
+              }
           }
         )
         .as(ExitCode.Success)

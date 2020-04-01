@@ -64,6 +64,7 @@ lazy val publishSettings = Seq(
       url("http://janbessai.github.io")
     )
   ),
+  version := "0.0.2",
   releaseEarlyWith := SonatypePublisher
 )
 
