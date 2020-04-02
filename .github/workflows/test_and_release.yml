@@ -46,7 +46,7 @@ jobs:
         git fetch origin master &&
         MASTER=`git rev-parse origin/master` &&
         echo "::set-output name=head_of_master::$MASTER" &&
-        CURRENT=`git rev-list -n 1 ${{ github.ref }}` &&
+        CURRENT=`git rev-list -n 1 ${{ github.ref }} || echo "NOT_MASTER"` &&
         echo "::set-output name=current_job_ref::$CURRENT"
     - name: Set up JDK, Scala, and SBT
       if: steps.check_head_of_master.outputs.head_of_master == steps.check_head_of_master.outputs.current_job_ref
