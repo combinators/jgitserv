@@ -5,12 +5,10 @@ import ch.epfl.scala.sbt.release.ReleaseEarlyPlugin.autoImport._
 
 lazy val commonSettings = Seq(
   organization := "org.combinators",
-  scalaVersion := "2.12.10",
-  crossScalaVersions := Seq("2.11.12", scalaVersion.value),
-  resolvers ++= Seq(
-    Resolver.sonatypeRepo("releases"),
-    Resolver.typesafeRepo("releases")
-  ),
+  scalaVersion := "3.6.4",
+  crossScalaVersions := Seq("2.13.16", "3.3.5"),
+  resolvers += Resolver.sonatypeRepo("releases"),
+  resolvers ++= Resolver.typesafeRepo("releases"),
 
   scalacOptions ++= Seq(
     "-unchecked",
@@ -20,12 +18,12 @@ lazy val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.1.0" % "test",
-    "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.1" % "test",
-    "org.scalacheck" %% "scalacheck" % "1.14.1" % "test" 
+    "org.scalatest" %% "scalatest" % "3.2.19" % "test",
+    "org.scalatestplus" %% "scalacheck-1-18" % "3.2.19.0" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.18.1" % "test" 
   ),
-  headerLicense := Some(HeaderLicense.ALv2("2020", "Jan Bessai")),
-  scapegoatVersion in ThisBuild := "1.4.1",
+  headerLicense := Some(HeaderLicense.ALv2("2025", "Jan Bessai")),
+  scapegoatVersion in ThisBuild := "3.1.8",
   concurrentRestrictions in Global ++= {
     if (sys.env.get("CI") == Some("github")) Seq(Tags.limitAll(1)) else Seq.empty
   }
@@ -38,11 +36,13 @@ lazy val root =
       moduleName := "jgitserv",
       libraryDependencies ++= Seq(
         "org.combinators" %% "templating" % "1.1.0",
-        "com.github.finagle" %% "finchx-core" % "0.31.0",
+        "com.github.finagle" %% "finchx-core" % "0.32.1",
+        //"org.typelevel" %% "cats-effect" % "2.1.2",
         "org.eclipse.jgit" % "org.eclipse.jgit" % "5.4.0.201906121030-r",
         "commons-io" % "commons-io" % "2.6",
+        "commons-daemon" % "commons-daemon" % "1.2.2",
         "ch.qos.logback" % "logback-classic" % "1.2.3"
-      )
+)
     )
 
 lazy val publishSettings = Seq(

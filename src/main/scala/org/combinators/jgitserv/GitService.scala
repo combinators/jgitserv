@@ -19,13 +19,14 @@ package org.combinators.jgitserv
 import java.io.FileInputStream
 import java.nio.file.{Files, Paths}
 
-import cats.effect.{ExitCode, IO, IOApp, Resource}
+import cats.effect.{ExitCode, Fiber, IO, IOApp, IODaemon, Resource, SyncIO}
 import cats.implicits._
 import com.twitter.finagle.{Http, ListeningServer}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
 import io.finch._
 import io.finch.Encode._
+import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 
@@ -46,7 +47,7 @@ class GitService(
     transactions: Seq[BranchTransaction],
     repositoryName: String = "",
     port: Int = 8081
-) extends IOApp {
+) extends IOApp with IODaemon {
 
   /** The Git repository in which files are stored while the server is active. */
   private lazy val git: Resource[IO, Git] = {
@@ -132,4 +133,14 @@ class GitService(
         .as(ExitCode.Success)
     })
   }
+
+  def init(context: DaemonContext): SyncIO[Unit] = {
+    
+  }
+
+  def start: IO[Unit] = ???
+
+  def stop(service: Fiber[IO, Unit]): IO[Unit] = ???
+
+  def destroy: SyncIO[Unit] = ???
 }
